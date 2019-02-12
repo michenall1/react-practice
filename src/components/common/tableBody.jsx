@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 
-const TableBody = ({ data, columns, onDelete, onLike }) => {
+const TableBody = ({ data, columns }) => {
   const renderCell = (item, column) => {
     if (column.content) return column.content(item);
     else return _.get(item, column.path);
@@ -13,13 +13,15 @@ const TableBody = ({ data, columns, onDelete, onLike }) => {
 
   return (
     <tbody>
-      {data.map(item => (
-        <tr key={item._id}>
-          {columns.map(col => (
-            <td key={createKey(item, col)}>{renderCell(item, col)}</td>
-          ))}
-        </tr>
-      ))}
+      {data.map(item => {
+        return (
+          <tr key={item._id}>
+            {columns.map(col => (
+              <td key={createKey(item, col)}>{renderCell(item, col)}</td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   );
 };

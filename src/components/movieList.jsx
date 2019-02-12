@@ -76,31 +76,29 @@ class MovieList extends Component {
     const { totalCount, data } = this.getPageData(this.state);
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-3">
-            <ListGroup
-              items={this.state.genres}
-              onItemSelect={this.handleGenreSelect}
-              selectedItem={this.state.selectedGenre}
-            />
-          </div>
-          <div className="col">
-            <p>Showing {totalCount} movies in the database.</p>
-            <MoviesTable
-              movies={data}
-              sortColumn={sortColumn}
-              onDelete={this.handleDelete}
-              onLike={this.handleLike}
-              onSort={this.handleSort}
-            />
-            <Pagination
-              itemsCount={totalCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={this.handlePageChange}
-            />
-          </div>
+      <div className="row">
+        <div className="col-3">
+          <ListGroup
+            items={this.state.genres}
+            onItemSelect={this.handleGenreSelect}
+            selectedItem={this.state.selectedGenre}
+          />
+        </div>
+        <div className="col">
+          <p>Showing {totalCount} movies in the database.</p>
+          <MoviesTable
+            movies={data}
+            sortColumn={sortColumn}
+            onDelete={this.handleDelete}
+            onLike={this.handleLike}
+            onSort={this.handleSort}
+          />
+          <Pagination
+            itemsCount={totalCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
         </div>
       </div>
     );
