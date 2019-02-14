@@ -13,15 +13,13 @@ const TableBody = ({ data, columns }) => {
 
   return (
     <tbody>
-      {data.map(item => {
-        return (
-          <tr key={item._id}>
-            {columns.map(col => (
-              <td key={createKey(item, col)}>{renderCell(item, col)}</td>
-            ))}
-          </tr>
-        );
-      })}
+      {data.map(item => (
+        <tr key={item._id}>
+          {columns.map(col => (
+            <td key={createKey(item, col)}>{renderCell(item, col)}</td>
+          ))}
+        </tr>
+      ))}
     </tbody>
   );
 };

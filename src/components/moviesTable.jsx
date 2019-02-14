@@ -28,16 +28,7 @@ const MoviesTable = props => {
     }
   ];
 
-  return (
-    <Table
-      data={movies}
-      columns={columns}
-      sortColumn={sortColumn}
-      onSort={onSort}
-      onDelete={onDelete}
-      onLike={onLike}
-    />
-  );
+  return <Table data={movies} columns={columns} sortColumn={sortColumn} onSort={onSort} />;
 };
 
 export default MoviesTable;
