@@ -67,7 +67,7 @@ class MovieList extends Component {
     selectedGenre,
     movieList: movies
   }) => {
-    let filtered;
+    let filtered = movies;
     if (searchQuery) {
       filtered = movies.filter(m => m.title.toLowerCase().startWith(searchQuery.toLowerCase()));
     } else if (selectedGenre && selectedGenre._id) {
