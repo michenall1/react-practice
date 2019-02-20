@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import _ from "lodash";
 import { getMovies, deleteMovie } from "../services/movieService";
 import { getGenres } from "../services/genreService";
-import http from "../services/httpService";
+// import http from "../services/httpService";
 import { paginate } from "../utils/paginate";
 import MoviesTable from "./moviesTable";
 import ListGroup from "./common/lisetGroup";

@@ -1,8 +1,9 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { genres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
+import { toast } from "react-toastify";
 
 class MovieForm extends Form {
   state = {
@@ -17,8 +18,10 @@ class MovieForm extends Form {
   };
 
   schema = {
+    _id: Joi.any(),
     title: Joi.string()
       .required()
+      .min(5)
       .label("Title"),
     genreId: Joi.string()
       .required()
@@ -35,17 +38,28 @@ class MovieForm extends Form {
       .label("Rate")
   };
 
-  componentDidMount() {
+  async populateGenres() {
+    const { data: genres } = await getGenres();
     this.setState({ genres });
+  }
 
-    const movieId = this.props.match.params.id;
-    console.log("movieId:", movieId);
-    if (movieId === "new") return;
+  async populateMovie() {
+    try {
+      const movieId = this.props.match.params.id;
+      if (movieId === "new") return;
 
-    const movie = getMovie(movieId);
-    if (!movie) return this.props.history.replace("/not-found");
+      const { data: movie } = await getMovie(movieId);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (e) {
+      if (e.response && e.response.status === 404) {
+        this.props.history.replace("/not-found");
+      }
+    }
+  }
 
-    this.setState({ data: this.mapToViewModel(movie) });
+  async componentDidMount() {
+    await this.populateGenres();
+    await this.populateMovie();
   }
 
   mapToViewModel = ({ _id, title, genre, numberInStock, dailyRentalRate }) => {
@@ -58,14 +72,24 @@ class MovieForm extends Form {
     };
   };
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
+  doSubmit = async () => {
+    const { data } = this.state;
+
+    try {
+      await saveMovie(data);
+    } catch (e) {
+      if (e.response && e.response.status === 400) {
+        toast.error(e.response.data);
+      }
+      return;
+    }
 
     this.props.history.push("/movies");
   };
 
   render() {
-    const { match, history } = this.props;
+    const { match } = this.props;
+    if (!this.state.genres.length) return <p>Loading</p>;
 
     return (
       <div>
@@ -77,10 +101,6 @@ class MovieForm extends Form {
           {this.renderInput("dailyRentalRate", "Rate")}
           {this.renderButton("Save")}
         </form>
-
-        {/* <button className="btn btn-primary" onClick={() => history.push("/movies")}>
-          Save
-        </button> */}
       </div>
     );
   }

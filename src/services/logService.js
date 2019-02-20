@@ -1,4 +1,4 @@
-import Raven from "raven-js";
+// import Raven from "raven-js";
 
 function init() {
   // Raven.config("https://a691659fcae64e26a58004b98c16ef7a@sentry.io/1396213", {
